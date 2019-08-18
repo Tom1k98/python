@@ -8,10 +8,10 @@ lbl = Label(window, text='- moje soubory jsou dobre zorganizovane\n- moje soubor
 lbl.grid(column=0, row=0)
 txt = Entry(window)
 txt.grid(column=3, row=0)
+a=txt.get()
 
 def clicked():
-    lbl.configure(text='or maybe nut')
+    lbl.configure(text=a)
 
-btn = Button(window, text='change my mind', command=clicked)
-btn.grid(column=0, row=1)
+btn = Button(window, text='change my mind', command=clicked).grid(column=1, row= 0)
 window.mainloop()
