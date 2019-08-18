@@ -1,0 +1,29 @@
+#!/usr/bin/python3
+import os
+import sys
+import random
+
+
+def clear():
+    os.system('clear')
+
+
+clear()
+print("....................")
+print("1. La La Land")
+print("2. The Greatest showman")
+print("3. Coco")
+print("4. The Other Woman")
+ans = input("napis 69 pro pokracovani :D ")
+if ans in "69":
+    for j in range(100):
+        print("test c. {}".format(j))
+        for i in range(4):
+            print("a vytezem se stava...")
+            cis = random.randint(1,4)
+            print(cis)
+else:
+    sys.exit()
+
+
+

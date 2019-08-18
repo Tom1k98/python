@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+import os
+import sys
+import random
+
+
+def clear():
+    os.system('clear')
+
+
+def main():
+    clear()
+    print("....................")
+    print("1. La La Land")
+    print("2. The Greatest showman")
+    print("3. Coco")
+    print("The Other Woman")
+    ans = input("napis 69 pro pokracovani :D ")
+    if ans == 69:
+        print("a vytezem se stava...")
+        print(random.randint())
+    else:
+        sys.exit()
+
+
+ main()
