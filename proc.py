@@ -16,14 +16,14 @@ def getproc(name):
 			running.append(name)
 
 def genproc():
-	procs = ['ansa_linux_x86_64', 'meta_post_x86_64', 'a4']
+	procs = ['ansa_linux_x86_64', 'meta_post_x86_64', 'a4', 'a4_linux64.x']
 	for getp in procs:
 		getproc(getp)
 
 
 
 def selectproc():
-	if 'a4' in running:
+	if ['a4', 'a4_linux64.x'] in running:
 		animator = 'animator - {}'.format(host)
 		file.write(animator)
 		file.write('\n')
