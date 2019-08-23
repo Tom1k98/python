@@ -6,8 +6,8 @@ from datetime import datetime
 host = socket.gethostname()
 tmp = datetime.now()
 now = tmp.strftime("%m%d%Y-%H%M%S")
-filename = '{}-{}'.format(host, now)
-file = open('/root/files/{}', 'w'.format(filename))
+filename = '/root/files/{}-{}'.format(host, now)
+file = open(filename, 'w'.format(filename))
 running = []
 
 def getproc(name):
