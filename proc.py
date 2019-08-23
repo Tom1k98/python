@@ -5,7 +5,7 @@ from datetime import datetime
 
 host = socket.gethostname()
 tmp = datetime.now()
-now = tmp.strftime("%m%d%Y")
+now = tmp.strftime("%m%d%Y-%H%M%S")
 filename = '{}-{}'.format(host, now)
 file = open(filename, 'w')
 running = []
@@ -26,14 +26,17 @@ def selectproc():
 	if 'a4' in running:
 		animator = 'animator - {}'.format(host)
 		file.write(animator)
+		file.write('\n')
 
 	if 'ansa_linux_x86_64' in running:
 		ansa = 'ansa - {}'.format(host)
 		file.write(ansa)
+		file.write('\n')
 
 	if 'meta_post_x86_64' in running:
 		meta = 'meta - {}'.format(host)
 		file.write(meta)
+		file.write('\n')
 
 def main():
 
