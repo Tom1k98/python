@@ -1,10 +1,15 @@
 import psutil
 import os
 import socket
+from datetime import datetime
 
 host = socket.gethostname()
+tmp = datetime.now()
+now = tmp.strftime("%m%d%Y")
+filename = '{}-{}'.format(host, now)
+file = open(filename, 'w')
 running = []
-ptime = []
+
 def getproc(name):
 	for proc in psutil.process_iter():
 		if proc.name() in name:
@@ -20,16 +25,16 @@ def genproc():
 def selectproc():
 	if 'a4' in running:
 		animator = 'animator - {}'.format(host)
-		print(animator)
+		file.write(animator)
 
 	if 'ansa_linux_x86_64' in running:
 		ansa = 'ansa - {}'.format(host)
-		print(ansa)
+		file.write(ansa)
 
 	if 'meta_post_x86_64' in running:
 		meta = 'meta - {}'.format(host)
-		print(meta)
-		
+		file.write(meta)
+
 def main():
 
 		genproc()
