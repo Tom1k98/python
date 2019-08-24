@@ -6,12 +6,12 @@ from datetime import datetime
 host = socket.gethostname()
 running = []
 tmp = datetime.now()
-now = tmp.strftime("%m%d%Y-%H%M%S")
+now = tmp.strftime("%m%d%Y-%H%M")
 
 if len(os.listdir('/root/files')) > 0:
 	for files in os.listdir('/root/files'):
 		os.remove('/root/files/{}'.format(files))
-		
+
 filename = '/root/files/{}-{}'.format(host, now)
 file = open(filename, 'w'.format(filename))
 
