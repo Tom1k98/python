@@ -1,6 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import smtplib
 import psutil
+import imaplib
+import base64
+from email import *
 def sendmail(to, text):
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
@@ -25,9 +28,31 @@ def sendmail(to, text):
     server.sendmail(email, send_to_email, text)
     server.quit()
 
-def notify(app):
-    for proc in psutil.process_iter():
-        if proc.name() in app:
-            sendmail('tomas.storc@gmail.com', 'there is app {} running on your pc'.format(app))
+def getmail():
+    email = 'tomas.storc@afd.cz'
+    password = 'Youmb609.'
+    mail = imaplib.IMAP4_SSL('mail.afd.cz', 993)
+    mail.login(email, password)
+    mail.select("inbox")
+    result, data = mail.search(None, 'ALL')
+    mail_ids = data[0]
 
-notify('firefox')
+    id_list = mail_ids.split()   
+    first_email_id = int(id_list[0])
+    latest_email_id = int(id_list[-1])
+
+    for i in range(latest_email_id,first_email_id, -1):
+        result, data = mail.fetch(str(i), '(RFC822)' )
+
+        for response_part in data:
+            if isinstance(response_part, tuple):
+                    # from_bytes, not from_string
+                msg = email.message_from_bytes(response_part[1])
+                email_subject = msg['subject']
+                email_from = msg['from']
+                print ('From : ' + email_from + '\n')
+                print ('Subject : ' + email_subject + '\n')
+    mail.close()
+    mail.logout()            
+
+getmail()

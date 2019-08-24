@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os 
+import os
 import sys
 import time
 from subprocess import PIPE, run
@@ -21,7 +21,7 @@ except:
     print("neplatny hostname")
     sys.exit()
 
-#ulozi lxlist 
+#ulozi lxlist
 host=sys.argv[1]
 tmp=out("ssh {} '/www/lxc/bin/lxlist -v'".format(host))
 final=str(tmp)
