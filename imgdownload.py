@@ -14,5 +14,10 @@ def downloadimg(url, namet):
 def prompt():
     site = input("zadej url obrazku: ")
     nazev = input("zadej nazev souboru: ")
+    downloadimg(site, nazev)
 
 def main():
+    prompt()
+
+if __name__ == "__main__":
+    main()
