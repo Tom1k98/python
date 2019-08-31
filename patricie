@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import random
+import sys
+hezkeveci = ['masaz', 'kompliment', 'dat_cokoladu', 'objeti', 'kapra', 'pusinku na celicko', 'pussynku', 'vecere', 'dopis']
+
+
+def dnesnivec():
+	vec = random.choice(hezkeveci)
+	print(vec)
+
+dnesnivec()
