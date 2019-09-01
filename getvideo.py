@@ -6,7 +6,6 @@ import os
 import sys
 import smtplib
 import psutil
-import imaplib
 import base64
 
 
@@ -15,6 +14,7 @@ def out(command):
     return result.stdout
 
 def sendmail(to, text):
+
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
 
@@ -51,7 +51,6 @@ def getvid(url):
     nazev = re.sub('[^A-Za-z0-9]+', '', nazevt)
     print('nazev: {}'.format(nazevt))
     print('odkaz: https://www.youtube.com/{}'.format(linkt))
-    print(nazev)
     link = 'https://www.youtube.com{}'.format(linkt)
     if os.path.isfile('/home/tom/Videos/{}'.format(nazev)):
         print('soubor je jiz stazen')
