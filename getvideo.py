@@ -34,7 +34,7 @@ def sendmail(to, text):
     server = smtplib.SMTP('mail.afd.cz', 587)
     server.starttls()
     server.login(email, password)
-    text = msg.as_string() # You now need to convert the MIMEMultipart object to a string to send
+    text = msg.as_string() 
     server.sendmail(email, send_to_email, text)
     server.quit()
 
