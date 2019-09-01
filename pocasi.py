@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 import sys
+import csv
 
 tmp = datetime.now()
 date = tmp.strftime("%d.%m.%Y")
@@ -28,10 +29,17 @@ def getvalues():
     with open('/home/tom/data/pocasi', 'a') as f:
             f.write('{} - max - {}\n'.format(date, max))
             f.write('{} - min - {}\n'.format(date, min))
+    f.close()
+
+    with open('/home/tom/data/pocasi.csv', 'a') as csv_file:
+        csv_w = csv.writer(csv_file)
+        csv_w.writerow([date, max, min])
+    csv_file.close()
+
 
 def main():
     check()
-#    getvalues()
+    getvalues()
 
 if __name__ == '__main__':
     main()
