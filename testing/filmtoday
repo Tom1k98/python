@@ -1,8 +1,0 @@
-#!/usr/bin/python3
-
-import random
-
-
-
-films = ['La La Land', 'The Greatest showman', 'Coco', 'The Other Woman']
-print('dnesni film je: {}'.format(random.choice(films)))
