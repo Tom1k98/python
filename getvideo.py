@@ -8,6 +8,15 @@ import smtplib
 import psutil
 import base64
 
+channels = ['https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g',
+'https://www.youtube.com/user/AlexandrasGirlyTalk/videos',
+'https://www.youtube.com/user/orionvanessa/videos',
+'https://www.youtube.com/channel/UCPQ-f1KEJi-a49SLgYHifUA/videos',
+'https://www.youtube.com/channel/UCOPcvkL6SK9GJV4rrWfQ_fQ/videos',
+'https://www.youtube.com/user/missAlexandraC/videos',
+'https://www.youtube.com/user/BeautyBySiena/videos']
+
+newvid = []
 
 def out(command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
@@ -34,11 +43,9 @@ def sendmail(to, text):
     server = smtplib.SMTP('mail.afd.cz', 587)
     server.starttls()
     server.login(email, password)
-    text = msg.as_string() 
+    text = msg.as_string()
     server.sendmail(email, send_to_email, text)
     server.quit()
-
-
 
 
 def getvid(url):
@@ -54,16 +61,23 @@ def getvid(url):
     link = 'https://www.youtube.com{}'.format(linkt)
     if os.path.isfile('/home/tom/Videos/{}'.format(nazev)):
         print('soubor je jiz stazen')
-        sys.exit()
     else:
-        out('youtube-dl {} -o ~/Videos/{}'.format(link, nazev))
-        zprava = "vyslo nove video s nazvem {}".format(nazevt)
-        sendmail('patriciecavojova@seznam.cz', zprava)
+        #out('youtube-dl {} -o ~/Videos/{}'.format(link, nazev))
+        newvid.append("nazev: {}\n".format(nazevt))
+
+
+def sendinfo(to):
+    videos = ''.join(newvid)
+    message = f'vyslo nove video:\n{videos}'
+    sendmail(to, message)
 
 
 
 def main():
-    getvid('https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g')
+    for i in channels:
+        getvid(i)
+
+    sendinfo('patriciecavojova@seznam.cz')
 
 if __name__ == "__main__":
     main()
