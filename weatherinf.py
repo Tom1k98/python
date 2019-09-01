@@ -10,7 +10,7 @@ tmp = datetime.now()
 date = tmp.strftime("%d.%m.%Y")
 
 def check():
-    with open('/home/tom/data/pocasi') as file:
+    with open('/home/tom/data/pocasi.csv') as file:
         line = file.read()
         if date in line:
             print('today records already written')
