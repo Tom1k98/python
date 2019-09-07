@@ -40,5 +40,5 @@ def porovnej():
 
 if __name__ == "__main__":
     collect()
-    #vypis()
+    vypis()
     porovnej()
