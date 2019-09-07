@@ -4,9 +4,8 @@ from subprocess import PIPE, run
 import re
 import os
 import sys
-import smtplib
-import psutil
-import base64
+from mymail import *
+
 
 channels = ['https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g',
 'https://www.youtube.com/user/AlexandrasGirlyTalk/videos',
@@ -21,32 +20,6 @@ newvid = []
 def out(command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True)
     return result.stdout
-
-def sendmail(to, text):
-
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-
-    email = 'tomas.storc@afd.cz'
-    password = 'Youmb609.'
-    send_to_email = to
-    subject = 'nove video' # The subject line
-    message = text
-
-    msg = MIMEMultipart()
-    msg['From'] = email
-    msg['To'] = send_to_email
-    msg['Subject'] = subject
-
-    msg.attach(MIMEText(message, 'plain'))
-
-    server = smtplib.SMTP('mail.afd.cz', 587)
-    server.starttls()
-    server.login(email, password)
-    text = msg.as_string()
-    server.sendmail(email, send_to_email, text)
-    server.quit()
-
 
 def getvid(url):
     site = url
