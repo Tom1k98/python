@@ -2,11 +2,12 @@
 import requests
 import shutil
 
+base_path = '/home/tom/Pictures'
 def downloadimg(url, namet):
     tmp = url.split(".")
     atta = tmp[-1]
     name = '{}.{}'.format(namet, atta)
-    path = '/home/tom/Pictures/{}'.format(name)
+    path = '{}/{}'.format(base_path, name)
     r = requests.get(url)
     with open(path, 'wb') as f:
         f.write(r.content)
