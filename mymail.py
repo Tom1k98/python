@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 import smtplib
-import psutil
 import imaplib
 import base64
 
-def sendmail(to, text):
+def sendmail(to, subject,  text):
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
 
     email = 'tomas.storc@afd.cz'
     password = 'Youmb609.'
     send_to_email = to
-    subject = 'test' # The subject line
+    subject = subject
     message = text
 
     msg = MIMEMultipart()
@@ -24,6 +23,6 @@ def sendmail(to, text):
     server = smtplib.SMTP('mail.afd.cz', 587)
     server.starttls()
     server.login(email, password)
-    text = msg.as_string() # You now need to convert the MIMEMultipart object to a string to send
+    text = msg.as_string()
     server.sendmail(email, send_to_email, text)
     server.quit()
