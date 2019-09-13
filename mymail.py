@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import smtplib
-import imaplib
 import base64
 
-def sendmail(to, subject,  text):
+def mysendmail(to, subject,  text):
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
 
