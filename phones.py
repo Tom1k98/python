@@ -33,11 +33,17 @@ def vypis():
 def porovnej():
     index = 0
     for phone in heureka:
-        url = requests.get(f'https://www.heureka.cz/?h%5Bfraze%5D={phone}').text
-        data = BeautifulSoup(url, 'lxml')
-        cenaheu = data.find('a', {'class': 'pricen'})
-        print(f"{nazev[index]}:\n\theureka - {cenaheu.text}\n\talza - {cena[index]}")
-        index += 1
+        try:
+            url = requests.get(f'https://www.heureka.cz/?h%5Bfraze%5D={phone}').text
+            data = BeautifulSoup(url, 'lxml')
+            cenaheu = data.find('a', {'class': 'pricen'})
+            print(f"{nazev[index]}:\n\theureka - {cenaheu.text}\n\talza - {cena[index]}")
+            index += 1
+        except:
+            print("")
+            print(f"Nenalezena zadna data pro: {phone.replace('+', ' ')}")
+            print("")
+            pass
 
 if __name__ == "__main__":
     collect()
