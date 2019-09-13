@@ -42,7 +42,8 @@ def getvid(url):
 def sendinfo(to):
     videos = ''.join(newvid)
     message = f'vyslo nove video:\n{videos}'
-    sendmail(to, message)
+    subject = 'nova videa'
+    mysendmail(to, subject, message)
 
 
 
