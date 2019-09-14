@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import random
-hezkeveci = ['masaz', 'kompliment', 'dat_cokoladu', 'objeti', 'pusinku na celicko', 'vecere', 'dopis', 'kvetina', 'makronek', 'poskrabkat']
+hezkeveci = ['masaz', 'kompliment', 'dat cokoladu', 'objeti', 'pusinku na celicko', 'vecere', 'dopis', 'kvetina', 'makronek', 'poskrabkat']
 
 
 def dnesnivec():
