@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import csv
 import sys
+import time
 
 SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
@@ -22,16 +23,41 @@ def getnews():
             datum = re.sub('[^0-9:]', '', scrp.text)[:5]
             nazev = scrp.h3.text.replace(':', '')
             odkaz = scrp.a['href']
+            komentar = getcommnets(odkaz)
             with open(FILE, 'a') as file:
                 if isWritten():
-                    print("already written")
+                    updateComments(komentar)
                 else:
                     csvw = csv.writer(file)
-                    csvw.writerow([datum, nazev, odkaz])
+                    csvw.writerow([datum, nazev, odkaz, komentar])
                     #print(f"{odkaz} - {datum} - {nazev}")
             file.close()
         except:
             pass
+
+def getcommnets(od):
+    try:
+        url = requests.get(od).text
+        tmp = BeautifulSoup(url, 'lxml')
+        comm = tmp.find('span', {'class': 'q_fX'})
+        comm = re.sub('[^0-9]', '', comm.text)
+        return comm
+    except:
+        pass
+
+def updateComments(commn):
+ 
+    if commn != getcommnets(odkaz):
+        commn = getcommnets(odkaz)
+        file = open(FILE, 'w')
+        csvw = csv.writer(file)
+        csvw.writerow([datum, nazev, odkaz, commn])
+       # print("comment updated")
+    else:
+        pass
+        #  print('no update')
+    #print(f"{odkaz} - {datum} - {nazev}")
+
 
 
 def isWritten():
@@ -41,8 +67,10 @@ def isWritten():
             if nazev in line:
                 return True
 
-            pass
 
 if __name__ == "__main__":
-    getnews()
+        while 1>0:
+            time.sleep(1200)
+            getnews()
+
 
