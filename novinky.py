@@ -2,42 +2,47 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import csv
-from datetime import datetime
 import sys
 
 SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
-datum = 'a'
-nazev = 'a'
-tmp = datetime.now()
-timestamp = tmp.strftime("%d%m%Y%H%M%S")
+datum = ''
+nazev = ''
+odkaz = ''
+
 
 def getnews():
+    global datum
+    global nazev
+    global odkaz
     url = requests.get(SITE).text
     tmp = BeautifulSoup(url, 'lxml')
-    for scrp in tmp.findAll('div', {'class': 'f_bB'}):
+    for scrp in tmp.findAll('div', {'class': 'f_bz'}):
         try:
             datum = re.sub('[^0-9:]', '', scrp.text)[:5]
             nazev = scrp.h3.text.replace(':', '')
-            print(f"{nazev} - {datum}")
+            odkaz = scrp.a['href']
+            with open(FILE, 'a') as file:
+                if isWritten():
+                    print("already written")
+                else:
+                    csvw = csv.writer(file)
+                    csvw.writerow([datum, nazev, odkaz])
+                    #print(f"{odkaz} - {datum} - {nazev}")
+            file.close()
         except:
             pass
 
-def writecsv():
-    with open(FILE, 'a') as file:
-        csvw = csv.writer(file)
-        csvw.writerow([timestamp, datum, nazev])
-    file.close()
 
-def check():
+def isWritten():
     with open(FILE) as file:
-        line = file.readlines()
-        if timestamp in line:
-            print('today records already written')
-            sys.exit()
+        lines = file.readlines()
+        for line in lines:
+            if nazev in line:
+                return True
 
+            pass
 
 if __name__ == "__main__":
     getnews()
-    check()
-    writecsv()
+
