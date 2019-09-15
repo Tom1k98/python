@@ -49,9 +49,10 @@ def updateComments(commn):
  
     if commn != getcommnets(odkaz):
         commn = getcommnets(odkaz)
-        file = open(FILE, 'w')
+        text = 'comment update'
+        file = open(FILE, 'a')
         csvw = csv.writer(file)
-        csvw.writerow([datum, nazev, odkaz, commn])
+        csvw.writerow([datum, nazev, odkaz, commn, text])
        # print("comment updated")
     else:
         pass
@@ -70,7 +71,8 @@ def isWritten():
 
 if __name__ == "__main__":
         while 1>0:
-            time.sleep(1200)
             getnews()
+            time.sleep(600)
+            
 
 
