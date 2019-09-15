@@ -1,36 +1,43 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 import csv
 import sys
 import time
+import re
+from datetime import datetime
 
 SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
 datum = ''
 nazev = ''
 odkaz = ''
+komentar = ''
 
 
 def getnews():
     global datum
     global nazev
     global odkaz
+    global komentar
     url = requests.get(SITE).text
     tmp = BeautifulSoup(url, 'lxml')
     for scrp in tmp.findAll('div', {'class': 'f_bz'}):
         try:
-            datum = re.sub('[^0-9:]', '', scrp.text)[:5]
             nazev = scrp.h3.text.replace(':', '')
             odkaz = scrp.a['href']
             komentar = getcommnets(odkaz)
             with open(FILE, 'a') as file:
                 if isWritten():
-                    updateComments(komentar)
+                    if updateComments():
+                        text = "update comment"
+                        csvw = csv.writer(file)
+                        csvw.writerow([cas, nazev, odkaz, komentar, text])
+                    else:
+                        pass
                 else:
+                    text = "new article"
                     csvw = csv.writer(file)
-                    csvw.writerow([datum, nazev, odkaz, komentar])
-                    #print(f"{odkaz} - {datum} - {nazev}")
+                    csvw.writerow([cas, nazev, odkaz, komentar, text])
             file.close()
         except:
             pass
@@ -45,15 +52,21 @@ def getcommnets(od):
     except:
         pass
 
-def updateComments(commn):
-    if commn != getcommnets(odkaz):
-        commn = getcommnets(odkaz)
-        text = 'comment update'
-        file = open(FILE, 'a')
-        csvw = csv.writer(file)
-        csvw.writerow([datum, nazev, odkaz, commn, text])
-    else:
-        pass
+def getCategory():
+    url = requests.get('https://www.novinky.cz/domaci/clanek/znojmo-slavilo-vinobrani-dorazily-tisice-lidi-40296544').text
+    tmp = BeautifulSoup(url, 'lxml')
+    for category in tmp.find('div', {'class': ''}):
+        print(category)
+
+def updateComments():
+    with open(FILE) as file_n:
+        lines = file_n.readlines()
+        for line in lines:
+            if komentar in line:
+                return False
+            else:
+                pass
+    return True
 
 def isWritten():
     with open(FILE) as file:
@@ -64,9 +77,10 @@ def isWritten():
 
 
 if __name__ == "__main__":
-        while 1>0:
-            getnews()
-            time.sleep(600)
+    tmp = datetime.now()
+    cas = tmp.strftime("%d.%m.%Y %H:%M")
+    getnews()
+    #getCategory()
             
 
 
