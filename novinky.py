@@ -46,20 +46,14 @@ def getcommnets(od):
         pass
 
 def updateComments(commn):
- 
     if commn != getcommnets(odkaz):
         commn = getcommnets(odkaz)
         text = 'comment update'
         file = open(FILE, 'a')
         csvw = csv.writer(file)
         csvw.writerow([datum, nazev, odkaz, commn, text])
-       # print("comment updated")
     else:
         pass
-        #  print('no update')
-    #print(f"{odkaz} - {datum} - {nazev}")
-
-
 
 def isWritten():
     with open(FILE) as file:
