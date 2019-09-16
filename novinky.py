@@ -12,13 +12,15 @@ datum = ''
 nazev = ''
 odkaz = ''
 komentar = ''
-
+kategorie = ''
+category = []
 
 def getnews():
     global datum
     global nazev
     global odkaz
     global komentar
+    global kategorie
     url = requests.get(SITE).text
     tmp = BeautifulSoup(url, 'lxml')
     for scrp in tmp.findAll('div', {'class': 'f_bz'}):
@@ -26,18 +28,19 @@ def getnews():
             nazev = scrp.h3.text.replace(':', '')
             odkaz = scrp.a['href']
             komentar = getcommnets(odkaz)
+            kategorie = getCategory(odkaz)
             with open(FILE, 'a') as file:
                 if isWritten():
                     if updateComments():
                         text = "update comment"
                         csvw = csv.writer(file)
-                        csvw.writerow([cas, nazev, odkaz, komentar, text])
+                        csvw.writerow([cas, nazev, odkaz, komentar, text, kategorie])
                     else:
                         pass
                 else:
                     text = "new article"
                     csvw = csv.writer(file)
-                    csvw.writerow([cas, nazev, odkaz, komentar, text])
+                    csvw.writerow([cas, nazev, odkaz, komentar, text, kategorie])
             file.close()
         except:
             pass
@@ -52,11 +55,16 @@ def getcommnets(od):
     except:
         pass
 
-def getCategory():
-    url = requests.get('https://www.novinky.cz/domaci/clanek/znojmo-slavilo-vinobrani-dorazily-tisice-lidi-40296544').text
+def getCategory(kat):
+    global category
+    category = []
+    url = requests.get(kat).text
     tmp = BeautifulSoup(url, 'lxml')
-    for category in tmp.find('div', {'class': ''}):
-        print(category)
+    for items in tmp.find('div', {'class': 'f_au'}):
+        cat_final = items.text
+        category.append(cat_final)
+    return category[1]
+    
 
 def updateComments():
     with open(FILE) as file_n:
@@ -80,7 +88,7 @@ if __name__ == "__main__":
     tmp = datetime.now()
     cas = tmp.strftime("%d.%m.%Y %H:%M")
     getnews()
-    #getCategory()
+  
             
 
 
