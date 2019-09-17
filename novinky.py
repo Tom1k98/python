@@ -70,11 +70,11 @@ def updateComments():
     with open(FILE) as file_n:
         lines = file_n.readlines()
         for line in lines:
-            if komentar in line:
-                return False
-            else:
-                pass
-    return True
+            if nazev in line:
+                if komentar in line:
+                    return False
+                else:
+                    return True
 
 def isWritten():
     with open(FILE) as file:
