@@ -49,7 +49,7 @@ def getcommnets(od):
     try:
         url = requests.get(od).text
         tmp = BeautifulSoup(url, 'lxml')
-        comm = tmp.find('span', {'class': 'q_fX'})
+        comm = tmp.find('span', {'class': 'q_f9'})
         comm = re.sub('[^0-9]', '', comm.text)
         return comm
     except:
