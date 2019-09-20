@@ -73,8 +73,7 @@ def updateComments():
             if nazev in line:
                 if komentar in line:
                     return False
-                else:
-                    return True
+        return True
 
 def isWritten():
     with open(FILE) as file:
