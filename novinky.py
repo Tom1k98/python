@@ -5,6 +5,7 @@ import sys
 import time
 import re
 from datetime import datetime
+import makefinal as mf
 
 SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
@@ -49,7 +50,7 @@ def getcommnets(od):
     try:
         url = requests.get(od).text
         tmp = BeautifulSoup(url, 'lxml')
-        comm = tmp.find('span', {'class': 'q_f9'})
+        comm = tmp.find('span', {'class': 'q_ga'})
         comm = re.sub('[^0-9]', '', comm.text)
         return comm
     except:
@@ -87,6 +88,7 @@ if __name__ == "__main__":
     tmp = datetime.now()
     cas = tmp.strftime("%d.%m.%Y %H:%M")
     getnews()
+    mf.rmduplicate()
   
             
 
