@@ -4,11 +4,21 @@ import csv
 import sys
 import time
 import re
-from datetime import datetime
-import makefinal as mf
+from datetime import datetime, date
+from glob import glob
+import os
+import calendar
+import pandas as pd
+
+line = datetime.now()
+cas = line.strftime("%d.%m.%Y %H:%M")
+month = line.strftime("%m")
+day = line.strftime("%d")
 
 SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
+OUT_FILE = f'/home/tom/csv/endofmonth/novinky-{month}.csv'
+COMM_FILE = f'/home/tom/csv/novinky_comments_{month}.csv'
 datum = ''
 nazev = ''
 odkaz = ''
@@ -23,8 +33,8 @@ def getnews():
     global komentar
     global kategorie
     url = requests.get(SITE).text
-    tmp = BeautifulSoup(url, 'lxml')
-    for scrp in tmp.findAll('div', {'class': 'f_bz'}):
+    line = BeautifulSoup(url, 'lxml')
+    for scrp in line.findAll('div', {'class': 'f_bz'}):
         try:
             nazev = scrp.h3.text.replace(':', '')
             odkaz = scrp.a['href']
@@ -49,8 +59,8 @@ def getnews():
 def getcommnets(od):
     try:
         url = requests.get(od).text
-        tmp = BeautifulSoup(url, 'lxml')
-        comm = tmp.find('span', {'class': 'q_ga'})
+        line = BeautifulSoup(url, 'lxml')
+        comm = line.find('span', {'class': 'q_gg'})
         comm = re.sub('[^0-9]', '', comm.text)
         return comm
     except:
@@ -60,8 +70,8 @@ def getCategory(kat):
     global category
     category = []
     url = requests.get(kat).text
-    tmp = BeautifulSoup(url, 'lxml')
-    for items in tmp.find('div', {'class': 'f_au'}):
+    line = BeautifulSoup(url, 'lxml')
+    for items in line.find('div', {'class': 'f_au'}):
         cat_final = items.text
         category.append(cat_final)
     return category[1]
@@ -83,25 +93,35 @@ def isWritten():
             if nazev in line:
                 return True
 
+def rmduplicate():
+    if os.path.exists(OUT_FILE):
+        pass
+    else:
+        df = pd.read_csv(FILE, sep=',', encoding='utf-8')
+        df.columns = ['datum', 'titulek', 'odkaz', 'komentare', 'text', 'rubrika']
+        df.drop_duplicates(subset='titulek',inplace = True, keep = 'last')
+        df.to_csv(OUT_FILE, encoding='utf-8')
+
 def getCommentsAll():
-    with open(FILE) as file_n:
-        lines = file_n.readlines()
-        for line in lines:
-            with open(FILE, 'a') as file:
-                tmp = line.split(".")
-                url = tmp[2]
-                kom_update = getcommnets(url)
+    files = glob('/home/tom/csv/endofmonth/*')
+    FILE_IN = max(files, key=os.path.getctime)
+    with open(FILE_IN) as file_n:
+        lines = csv.reader(file_n, delimiter=',')
+        with open(COMM_FILE, 'a') as file:
+            for line in lines:
+                print(line)
+                kom_update = getcommnets(line[2])
                 csv_update = csv.writer(file)
-                csv_update.writerow([tmp[0], tmp[1], tmp[2], kom_update,])
-
-
+                csv_update.writerow([line[0], line[1], line[2], kom_update, line[4], line[5]])
 
 
 if __name__ == "__main__":
-    tmp = datetime.now()
-    cas = tmp.strftime("%d.%m.%Y %H:%M")
     getnews()
-    mf.rmduplicate()
+    if day == '30':
+        rmduplicate()
+        getCommentsAll()
+        
+    
   
             
 
