@@ -2,3 +2,5 @@ mymail.py
 __pycache__/
 scrape.py
 patricie
+*.html
+*.db
