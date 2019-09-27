@@ -83,6 +83,19 @@ def isWritten():
             if nazev in line:
                 return True
 
+def getCommentsAll():
+    with open(FILE) as file_n:
+        lines = file_n.readlines()
+        for line in lines:
+            with open(FILE, 'a') as file:
+                tmp = line.split(".")
+                url = tmp[2]
+                kom_update = getcommnets(url)
+                csv_update = csv.writer(file)
+                csv_update.writerow([tmp[0], tmp[1], tmp[2], kom_update,])
+
+
+
 
 if __name__ == "__main__":
     tmp = datetime.now()
