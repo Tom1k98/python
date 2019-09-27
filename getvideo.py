@@ -7,7 +7,9 @@ import sys
 import time
 from mymail import *
 import concurrent.futures
+import unidecode
 
+TARGET = 'C:/Users/Tomas/Videos'
 
 channels = ['https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g',
 'https://www.youtube.com/user/AlexandrasGirlyTalk/videos',
@@ -30,16 +32,16 @@ def getvid(url):
     div = soup.find('div', {'class': 'yt-lockup-content'})
     nazevt = div.h3.a['title']
     linkt = div.h3.a['href']
-    nazev = re.sub('[^A-Za-z0-9]+', '', nazevt)
+    nazev = re.sub('[[?!|\*]', '', unidecode.unidecode(nazevt)).replace(' ', '_').replace('&', 'and')
     print('nazev: {}'.format(nazevt))
-    print('odkaz: https://www.youtube.com/{}'.format(linkt))
-    link = 'https://www.youtube.com{}'.format(linkt)
-    if os.path.isfile('/home/tom/Videos/{}'.format(nazev)):
-        print('soubor je jiz stazen')
+    print(f'odkaz: https://www.youtube.com{linkt}')
+    link = f'https://www.youtube.com{linkt}'
+    if os.path.isfile('{}/{}'.format(TARGET, nazev)):
+        print('Skipping, already downloaded')
     else:
         print(f"Downloading {nazev}")
-        out('youtube-dl {} -o ~/Videos/{}'.format(link, nazev))
-        newvid.append("nazev: {}\n".format(nazevt))
+        out(f'youtube-dl -f \"bestvideo[ext=mp4],bestaudio\" {link} -o {TARGET}/{nazev}')
+        newvid.append(f"nazev: {nazevt}\n")
 
 
 def sendinfo(to):
@@ -54,6 +56,7 @@ if __name__ == "__main__":
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(getvid, channels)
+
     finish = time.perf_counter()
-    print(f"Downloaded in {round(finish-start, 2)} second(s)")
+    print(f"Finished in {round(finish-start, 2)} second(s)")
     #sendinfo('petriciecavojova@seznam.cz')
