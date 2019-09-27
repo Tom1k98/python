@@ -4,7 +4,9 @@ from subprocess import PIPE, run
 import re
 import os
 import sys
+import time
 from mymail import *
+import concurrent.futures
 
 
 channels = ['https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g',
@@ -35,7 +37,8 @@ def getvid(url):
     if os.path.isfile('/home/tom/Videos/{}'.format(nazev)):
         print('soubor je jiz stazen')
     else:
-        #out('youtube-dl {} -o ~/Videos/{}'.format(link, nazev))
+        print(f"Downloading {nazev}")
+        out('youtube-dl {} -o ~/Videos/{}'.format(link, nazev))
         newvid.append("nazev: {}\n".format(nazevt))
 
 
@@ -47,11 +50,10 @@ def sendinfo(to):
 
 
 
-def main():
-    for i in channels:
-        getvid(i)
-
-    sendinfo('patriciecavojova@seznam.cz')
-
 if __name__ == "__main__":
-    main()
+    start = time.perf_counter()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(getvid, channels)
+    finish = time.perf_counter()
+    print(f"Downloaded in {round(finish-start, 2)} second(s)")
+    #sendinfo('petriciecavojova@seznam.cz')
