@@ -21,7 +21,7 @@ def collect():
         cenan = re.sub('[^0-9]+', '', final2)
         cena.append(cenan)
 
-def vypis():
+def printPhones():
     place = 1
     celkem = zip(nazev, cena, link)
     for naz, cen, lin in celkem:
@@ -29,7 +29,7 @@ def vypis():
         print()
         place += 1
 
-def porovnej():
+def compare():
     index = 0
     for phone in heureka:
         try:
@@ -46,5 +46,5 @@ def porovnej():
 
 if __name__ == "__main__":
     collect()
-    vypis()
-    porovnej()
+    printPhones()
+    compare()
