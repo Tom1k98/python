@@ -1,8 +1,6 @@
-# python
-mail.py - script to send mail via python\
-patricie - script which generates sweet things for my loved gf\
+# Collection of my python scripts
 imgdownoad.py - script which download image from internet and gives it desired name\
-getvideo.py - downloads latest video from specified youtube channel\
+getvideo.py - gets latest video of yt channels and put them all on one page\
 weatherinf.py - gets weather info for current day and writes these data to csv file\
 phones.py - collect top phones from alza, print them and compare them on heureka\
-scrape.py - work script which scrapes data from prometheus
+novinky.py - get aritcles from novinky.cz
