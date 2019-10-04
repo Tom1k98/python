@@ -5,9 +5,7 @@ import sys
 import time
 import re
 from datetime import datetime, date
-from glob import glob
 import os
-import calendar
 import pandas as pd
 
 line = datetime.now()
@@ -19,6 +17,7 @@ SITE = 'https://www.novinky.cz/stalo-se'
 FILE = '/home/tom/novinky.csv'
 OUT_FILE = f'/home/tom/csv/endofmonth/novinky-{month}.csv'
 COMM_FILE = f'/home/tom/csv/novinky_comments_{month}.csv'
+
 datum = ''
 nazev = ''
 odkaz = ''
@@ -36,7 +35,7 @@ def getnews():
     line = BeautifulSoup(url, 'lxml')
     for scrp in line.findAll('div', {'class': 'f_bz'}):
         try:
-            nazev = scrp.h3.text.replace(':', '')
+            nazev = re.sub('[:,]', '', scrp.h3.text)
             odkaz = scrp.a['href']
             komentar = getcommnets(odkaz)
             kategorie = getCategory(odkaz)
@@ -94,32 +93,30 @@ def isWritten():
                 return True
 
 def rmduplicate():
-    if os.path.exists(OUT_FILE):
-        pass
-    else:
         df = pd.read_csv(FILE, sep=',', encoding='utf-8')
         df.columns = ['datum', 'titulek', 'odkaz', 'komentare', 'text', 'rubrika']
         df.drop_duplicates(subset='titulek',inplace = True, keep = 'last')
         df.to_csv(OUT_FILE, encoding='utf-8')
 
 def getCommentsAll():
-    files = glob('/home/tom/csv/endofmonth/*')
-    FILE_IN = max(files, key=os.path.getctime)
-    with open(FILE_IN) as file_n:
+    with open(OUT_FILE) as file_n:
         lines = csv.reader(file_n, delimiter=',')
-        with open(COMM_FILE, 'a') as file:
-            for line in lines:
+        for line in lines:
                 print(line)
-                kom_update = getcommnets(line[2])
-                csv_update = csv.writer(file)
-                csv_update.writerow([line[0], line[1], line[2], kom_update, line[4], line[5]])
+                kom_update = getcommnets(line[3])
+                with open(COMM_FILE, 'a') as file:
+                    csv_update = csv.writer(file)
+                    csv_update.writerow([line[1], line[2], line[3], kom_update, line[5], line[6]])
 
 
 if __name__ == "__main__":
     getnews()
-    if day == '30':
-        rmduplicate()
-        getCommentsAll()
+    if day == '1':
+        if os.path.isfile(COMM_FILE):
+            sys.exit()
+        else:
+            rmduplicate()
+            getCommentsAll()
         
     
   
