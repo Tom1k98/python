@@ -26,7 +26,7 @@ def testsNum():
 
 def writeToFile():
     with open(OUT_FILE, 'a+') as file:
-        file.write(f'{time},{testsNum()},{casesNum()},{recoverNum()}')
+        file.write(f'{time},{testsNum()},{casesNum()},{recoverNum()}\n')
 
 if __name__ == "__main__":
     #print(f'{time} - {testsNum()} - {casesNum()} - {recoverNum()}')
