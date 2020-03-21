@@ -28,6 +28,15 @@ def writeToFile():
     with open(OUT_FILE, 'a+') as file:
         file.write(f'{time},{testsNum()},{casesNum()},{recoverNum()}\n')
 
+def checkUpdate():
+    latestf = soup.find('p', {'id': 'count-sick'}).text
+    with open(OUT_FILE) as file:
+        lines = file.readlines()
+        for line in lines:
+            if str(latestf) in line:
+                return True
+        return False
+
 if __name__ == "__main__":
     #print(f'{time} - {testsNum()} - {casesNum()} - {recoverNum()}')
-    writeToFile()
+    writeToFile() if checkUpdate() else print('nezapsano')
