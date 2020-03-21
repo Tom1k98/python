@@ -39,4 +39,4 @@ def checkUpdate():
 
 if __name__ == "__main__":
     #print(f'{time} - {testsNum()} - {casesNum()} - {recoverNum()}')
-    writeToFile() if checkUpdate() else print('nezapsano')
+    writeToFile() if not checkUpdate() else print('nezapsano')
