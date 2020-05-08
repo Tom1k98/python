@@ -17,9 +17,9 @@ def connectDB():
 	global failedRows
 	dbobj = mysql.connector.connect(
         host='localhost', 
-        user='root', 
+        user='', 
         passwd='',
-        database='AFDsupport')
+        database='')
 	mycursor = dbobj.cursor()
 	mycursor.execute(f'select * from ost_syslog where title like \'%Excessive%\' order by log_id desc limit {args.num};')
 	rowsNum = 0
