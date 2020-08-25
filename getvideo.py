@@ -10,13 +10,7 @@ import concurrent.futures
 import unidecode
 import sqlite3
 
-channels = ['https://www.youtube.com/channel/UCwmiCqC-56bUIdWBd9hTu2g',
-'https://www.youtube.com/user/AlexandrasGirlyTalk/videos',
-'https://www.youtube.com/user/orionvanessa/videos',
-'https://www.youtube.com/channel/UCPQ-f1KEJi-a49SLgYHifUA/videos',
-'https://www.youtube.com/channel/UCOPcvkL6SK9GJV4rrWfQ_fQ/videos',
-'https://www.youtube.com/user/missAlexandraC/videos',
-'https://www.youtube.com/user/BeautyBySiena/videos']
+channels = []
 
 newvid = []
 linktovid = []
