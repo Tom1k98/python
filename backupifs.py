@@ -3,6 +3,8 @@ import tarfile
 from subprocess import PIPE
 from datetime import datetime
 import logging
+import shutil
+import sys
 
 PATH_IN = '/oracle/FRA/PROD/backup'
 PATH_OUT = '/mnt/IKOS-EXPORT/ifs_bc'
@@ -24,16 +26,24 @@ def makeTar(files):
             tar.add(file)
             logging.info(f'file {file} added successfully')
 
+def enoughSpace():
+    total, used, free = shutil.disk_usage('/mnt')
+    return True if ((free // 2**30) > 15) else False
+
 
 if __name__ == '__main__':
     logging.basicConfig(filename=LOG_FILE,
                     filemode='a',
                     level=logging.DEBUG,
                     format='%(asctime)s:%(levelname)s:%(message)s')
-
-    files = findFiles()
-    del files[-1]
-    logging.info('files saved to list')
-    makeTar(files)
-    logging.info('tar created')
+    isSpace = enoughSpace()
+    if isSpace:
+        files = findFiles()
+        del files[-1]
+        logging.info('files saved to list')
+        makeTar(files)
+        logging.info('tar created')
+    else:
+        logging.error('not enough space on disk, exiting')
+        sys.exit()
     
