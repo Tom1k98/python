@@ -19,7 +19,7 @@ def findFiles():
     """
     fce, ktera vraci list souboru vytvorenych dnes
     """
-   return subprocess.run(['find', PATH_IN, '-type', 'f', '-mtime', '-1', '-print'], stderr=PIPE, stdout=PIPE).stdout.decode('UTF-8').split('\n')
+    return subprocess.run(['find', PATH_IN, '-type', 'f', '-mtime', '-1', '-print'], stderr=PIPE, stdout=PIPE).stdout.decode('UTF-8').split('\n')
 
 def makeTar(files):
     """
@@ -48,8 +48,7 @@ if __name__ == '__main__':
                     filemode='a',
                     level=logging.DEBUG,
                     format='%(asctime)s:%(levelname)s:%(message)s')
-    isSpace = enoughSpace()
-    if isSpace:
+    if enoughSpace():
         files = findFiles()
         del files[-1]
         logging.info('files saved to list')
@@ -58,4 +57,4 @@ if __name__ == '__main__':
     else:
         logging.error('not enough space on disk, exiting')
         sys.exit()
-    
+     
